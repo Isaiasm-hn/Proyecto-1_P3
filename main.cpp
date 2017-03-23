@@ -44,7 +44,7 @@ int main(){
 					mano_ip1.push_back(Baraja(used_cards.back()));
 					mano_sp1.push_back(Baraja2(used_cards.back()));
 					total_p1+=mano_ip1.back();
-					cout<<"Carta: "<<mano_sp1.back()<<endl<<"Total: "<<total_p1<<endl;
+					cout<<"Carta: "<<mano_sp1.back()<<endl;
 				}
 				if(total_p1 !=21){
 					char resp='S';
@@ -56,7 +56,7 @@ int main(){
 						mano_ip1.push_back(Baraja(used_cards.back()));
 						mano_sp1.push_back(Baraja2(used_cards.back()));
 						total_p1+=mano_ip1.back();
-						cout<<"Carta: "<<mano_sp1.back()<<endl<<"Total: "<<total_p1<<endl;
+						cout<<"Carta: "<<mano_sp1.back()<<endl;
 						if(total_p1>21){
 							bool as=false;
 							for (int i = 0; i < mano_ip1.size(); ++i){
@@ -88,7 +88,7 @@ int main(){
 							turno_pc=false;
 							ganador_pc=false;
 							resp='n';
-						}else{
+						}else {
 							ganador_pc=true;
 							resp='n';
 						}
@@ -110,16 +110,87 @@ int main(){
 					
 				}
 				if(turno_pc){
-					cout<<"~.~.~.~.~.~.~Turno PC~.~.~.~.~.~.~.~.~\n";
-
-				}
-				
-
+					cout<<"\n~.~.~.~.~.~.~Turno PC~.~.~.~.~.~.~.~.~\n";
+					for (int i = 0; i < 2; ++i){
+						cout<<endl;
+						used_cards.push_back(Repartir(used_cards));
+						mano_ipc.push_back(Baraja(used_cards.back()));
+						mano_spc.push_back(Baraja2(used_cards.back()));
+						total_pc+=mano_ipc.back();
+						cout<<"Carta: "<<mano_spc.back()<<endl<<endl;
+					}
+					bool decision;
+					do{
+						if(total_pc<18){
+							cout<<endl;
+							used_cards.push_back(Repartir(used_cards));
+							mano_ipc.push_back(Baraja(used_cards.back()));
+							mano_spc.push_back(Baraja2(used_cards.back()));
+							total_pc+=mano_ipc.back();
+							cout<<"Carta: "<<mano_spc.back()<<endl;
+						}
+						if(total_pc>21){
+							bool as=false;
+							for (int i = 0; i < mano_ipc.size(); ++i){
+								if(mano_ipc.at(i)==11){
+									mano_ipc.at(i)=1;
+									cout<<"Valor de A cambio a 1\n";
+									as=true;
+									break;
+								}
+							}
+							if(as){
+								total_pc=0;
+								for (int i = 0; i < mano_ipc.size(); ++i){
+									total_pc+=mano_ipc.at(i);
+								}
+								
+							}
+						}
+						if(total_pc<19){
+							cout<<endl;
+							used_cards.push_back(Repartir(used_cards));
+							mano_ipc.push_back(Baraja(used_cards.back()));
+							mano_spc.push_back(Baraja2(used_cards.back()));
+							total_pc+=mano_ipc.back();
+							cout<<"Carta: "<<mano_spc.back()<<endl;
+							decision=false;
+						}else{
+							decision=false;
+						}
 						
-					
-					
-			    			
-			     //turno de la computadora
+					}while(decision);
+					if(total_pc<19){
+							cout<<endl;
+							used_cards.push_back(Repartir(used_cards));
+							mano_ipc.push_back(Baraja(used_cards.back()));
+							mano_spc.push_back(Baraja2(used_cards.back()));
+							total_pc+=mano_ipc.back();
+							cout<<"Carta: "<<mano_spc.back()<<endl;
+							decision=false;
+						}
+					if(total_pc<total_p1){
+						cout<<"21 BlackJack Ha ganado! "<<nombre<<endl;
+						stringstream ss;
+						ss<<"-) "<<nombre<<"\t"<<total_p1<<endl;
+						ganadores.push_back(ss.str());
+						turno_pc=false;
+					}else if(total_pc>21){
+						cout<<"21 BlackJack Ha ganado! "<<nombre<<endl;
+						stringstream ss;
+						ss<<"-) "<<nombre<<"\t"<<total_p1<<endl;
+						ganadores.push_back(ss.str());
+						turno_pc=false;
+						
+					}else if(total_pc==total_p1){
+						cout<<"No hay ganador hay un empate!\n";
+					}else{
+						cout<<"21 BlackJack Ha ganado la PC p1!\n";
+						stringstream ss;
+						ss<<"-) "<<"PC"<<"\t"<<total_pc<<endl;
+						ganadores.push_back(ss.str());
+					}
+				}
 				break;
 			}
 					
@@ -143,6 +214,7 @@ int main(){
 int menuInicial(){
 	int opc;
 	do{
+		cout<<endl;
 		cout<<"1)- Iniciar Partida\n"<<
 			  "2)- Ver Partidas Ganadas\n"<<
 		  	  "3)- Salir del Juego\n"<<
